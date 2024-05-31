@@ -1,0 +1,50 @@
+<!-- Describe task in general -->
+
+<p style="text-align: justify;">
+The volume of an object almost derived from three views.
+</p>
+
+<p>
+You are given three views (front, right side, top) as input values.
+    Each of these is a string consisting of A to Y.
+These letters assigned row-major order in a 5x5 grid.
+</p>
+
+<p>You have to return the total volume of the object.</p>
+
+<p>
+    <strong>Examples:</strong>
+</p>
+
+<p style="text-align: center;">
+    <img title="example_01" src="{{MEDIA}}Three_views_example_01.svg" alt="example_01" style="vertical-align:top; width:310px;"/>
+    <img title="example_02" src="{{MEDIA}}Three_views_example_02.svg" alt="example_02" style="vertical-align:top; width:310px;"/>
+</p>
+
+<pre class="brush: {% if is_js %}javascript{% else %}python{% endif %}">
+assert three_views('BCDGHILMNQRSVWX', 'CHMRW', 'LMN') == 15
+assert three_views('GHILMNQRS', 'GHILMNQRS', 'GHILMNQRS', ) == 27
+</pre>
+
+
+
+<!-- Explain input and output values -->
+<p>
+    <strong>Input:</strong> The three views (front, right-side, top) (A list of 3 strings)
+</p>
+
+<p>
+    <strong>Output:</strong> The total volume of objects (An integer)
+</p>
+
+
+<!-- Here you can explain how it can be used in development -->
+<!-- The section is optional -->
+<!-- <p class="for_info_only">
+
+    <strong>How it’s used:</strong>
+    <i>(math is used everywhere)</i>
+</p> -->
+
+<!-- Here you can explain some constraints for input-->
+<!-- The section is optional -->
