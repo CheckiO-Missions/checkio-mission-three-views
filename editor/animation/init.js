@@ -26,36 +26,39 @@ requirejs(['ext_editor_io2', 'jquery_190', 'raphael_210'],
                     'stroke-width': '0.5px',
                     'stroke': '#294270',
                 },
-                tgt_grid: {
-                    'stroke-width': '0.5px',
-                    'stroke': '#294270',
+                tgt_cell: {
                     'fill': '#FABA00',
                 },
+                empty_cell: {
+                    'fill': '#C9EBFB',
+                },
                 cube: {
-                    orange: {
-                        dark: {
-                            'stroke-width': 0,
-                            'fill': '#F0801A',
-                        },
-                        mid: {
-                            'stroke-width': 0,
-                            'fill': '#F4A561',
-                        },
-                        light: {
-                            'stroke-width': 0,
-                            'fill': '#F7C091',
-                        },
+                    dark: {
+                        'stroke-width': 0,
+                        'fill': '#F0801A',
                     },
+                    mid: {
+                        'stroke-width': 0,
+                        'fill': '#F4A561',
+                    },
+                    light: {
+                        'stroke-width': 0,
+                        'fill': '#F7C091',
+                    },
+                },
+                footer_text: {
+                    'font-family': 'arial',
+                    'font-size': '10px',
+                    'text-anchor': 'start',
                 },
             }
 
             /**
              * values
              */
-            const input = data.in
-            const explanation = data.ext.explanation
+            let input = data.in
+            let explanation = data.ext.explanation
             const draw_area_px = 200
-            const os = 13
             const view_px = 80 
             const unit_px = view_px / 5
             const hex_edge = 41 
@@ -64,38 +67,44 @@ requirejs(['ext_editor_io2', 'jquery_190', 'raphael_210'],
             const cube_edge = hex_edge / 5
             const cube_height = height / 5
             const cube_base = base / 5
+            const au = 'ABCDEFGHIJKLMNOPQRSTUVWXY'
 
             // paper
-            const paper = Raphael(tgt_node, draw_area_px + (os * 2), draw_area_px + (os * 2))
+            const paper = Raphael(tgt_node, draw_area_px, draw_area_px + 30)
+            const cube_set = paper.set()
 
             /**
              * (func) draw view grid
              */
-            function draw_view_grid(sx, sy, input, header) {
+            function draw_view_grid(sx, sy, header) {
                 paper.text(sx + (view_px / 2), sy + view_px + 7, header).attr(attr.header_text)
-                const au = 'ABCDEFGHIJKLMNOPQRSTUVWXY'
-                for (let i = 0; i < 6; i += 1) {
-                    paper.path(['M', sx, sy + i * unit_px, 'h', view_px]).attr(attr.view_grid)
-                    paper.path(['M', sx + i * unit_px, sy, 'v', view_px]).attr(attr.view_grid)
-                }
+                const view_grid_dic = {}
                 let letter = ''
-                for (let i = 0; i < 5; i += 1) {
-                    for (let j = 0; j < 5; j += 1) {
-                        letter = au[i*5 + j]
-                        // tgt_grid
-                        if (input.includes(letter)) {
-                            paper.rect(
-                                sx + j * unit_px,
-                                sy + i * unit_px,
-                                unit_px, unit_px
-                            ).attr(attr.tgt_grid)
-                        }
+                for (let y = 0; y < 5; y += 1) {
+                    for (let x = 0; x < 5; x += 1) {
+                        letter = au[y*5 + x]
+                        view_grid_dic[letter] = 
+                            paper.rect(sx + x * unit_px, sy + y * unit_px, unit_px, unit_px).attr(attr.view_grid)
                         // letter
                         paper.text(
-                            sx + unit_px * (j + .5),
-                            sy + unit_px * (i + .5),  
+                            sx + unit_px * (x + .5),
+                            sy + unit_px * (y + .5),  
                             letter
                         )
+                    }    
+                }
+                return view_grid_dic
+            }
+
+            /**
+             * (func) grid painting
+             */
+            function grid_painting(grid_view_dic, letters) {
+                for (let i = 0; i < au.length; i += 1) {
+                    if (letters.includes(au[i])) {
+                        grid_view_dic[au[i]].attr(attr.tgt_cell)
+                    } else {
+                        grid_view_dic[au[i]].attr(attr.empty_cell)
                     }
                 }
             }
@@ -103,68 +112,51 @@ requirejs(['ext_editor_io2', 'jquery_190', 'raphael_210'],
             /**
              * draw view grid
              */
-            draw_view_grid( os + 10, os + 10 + draw_area_px / 2, input[0], 'FRONT')
-            draw_view_grid( os + 10 + draw_area_px / 2, os + 10 + draw_area_px / 2, input[1], 'RIGHT')
-            draw_view_grid(os + 10, os + 10, input[2], 'TOP')
+            const front_view_grid_dic = draw_view_grid( 10, 10 + draw_area_px / 2, 'FRONT')
+            const right_view_grid_dic = draw_view_grid( 10 + draw_area_px / 2, 10 + draw_area_px / 2, 'RIGHT')
+            const top_view_grid_dic = draw_view_grid(10, 10, 'TOP')
 
             /**
-             * draw guid line
+             * (func) view grid painting main
              */
-            paper.path(['M', os + 10, os + 10 + view_px, 'v', 20]).attr(attr.guid_line)
-            paper.path(['M', os + 10 + view_px, os + 10 + view_px, 'v', 20]).attr(attr.guid_line)
-            paper.path(['M', os + 10 + view_px, os + 30 + view_px, 'h', 20]).attr(attr.guid_line)
-            paper.path(['M', os + 10 + view_px, os + 30 + view_px * 2, 'h', 20]).attr(attr.guid_line)
-
-            /**
-             * draw isometric projection
-             */
-            // outline-frame
-            paper.path([
-                'M', draw_area_px * 3/4 + os, os + 10,
-                'l', -base, height,
-                'v', hex_edge,
-                'l', base, -height,
-                'v', -hex_edge,
-                'l', base, height,
-                'v', hex_edge,
-                'l', -base, -height,
-                'l', -base, height,
-                'l', base, height,
-                'l', base, -height,
-            ]).attr(attr.projection_frame)
+            function grid_painting_main() {
+                grid_painting(front_view_grid_dic, input[0])
+                grid_painting(right_view_grid_dic, input[1])
+                grid_painting(top_view_grid_dic, input[2])
+            }
 
             /**
              * (func) draw cube
              */
             function draw_cube(sx, sy) {
                 // front
-                paper.path([
+                cube_set.push(paper.path([
                     'M', sx, sy,
                     'v', -cube_edge,
                     'l', cube_base, cube_height,
                     'v', cube_edge,
                     'z',
-                ]).attr(attr.cube.orange.light)
+                ]).attr(attr.cube.light))
                 // top
-                paper.path([
+                cube_set.push(paper.path([
                     'M', sx, sy - cube_edge,
                     'l', cube_base, -cube_height,
                     'l', cube_base, cube_height,
                     'l', -cube_base, cube_height,
                     'z',
-                ]).attr(attr.cube.orange.mid)
+                ]).attr(attr.cube.mid))
                 // right
-                paper.path([
+                cube_set.push(paper.path([
                     'M', sx + cube_base, sy + cube_height,
                     'v', -cube_edge,
                     'l', cube_base, -cube_height,
                     'v', cube_edge,
                     'z',
-                ]).attr(attr.cube.orange.dark)
+                ]).attr(attr.cube.dark))
             }
 
             /**
-             * draw cube
+             * (func) sort cubes
              */
             function compareFn(a, b) {
                 const [a1, a2, a3] = a
@@ -179,12 +171,95 @@ requirejs(['ext_editor_io2', 'jquery_190', 'raphael_210'],
                     return 0
                 }
             }
-            explanation.sort(compareFn)
-            explanation.forEach(([dx, dy, dz]) => {
-                const ox = draw_area_px * 3 / 4 + os - base + ((dx + dz) * cube_base)
-                const oy = os + 10 + height + hex_edge + ((dx - dz) * cube_height) - dy * cube_edge  
-                draw_cube(ox, oy)
-            })
+
+            /**
+             * (func) draw cubes main
+             */
+            function draw_cubes() {
+                explanation.sort(compareFn)
+                explanation.forEach(([dx, dy, dz]) => {
+                    const ox = draw_area_px * 3 / 4 - base + ((dx + dz) * cube_base)
+                    const oy = 10 + height + hex_edge + ((dx - dz) * cube_height) - dy * cube_edge
+                    draw_cube(ox, oy)
+                })
+            }
+
+            /*
+             * (func) rotate cube
+             */
+            function rotate_cubes() {
+                const new_explanation = []
+                explanation.forEach(([x, y, z]) => {
+                    new_explanation.push([z, y, 4-x])
+                })
+                explanation = new_explanation
+            }
+
+            /*
+             * (func) clear cube_set
+             */
+            function clear_cube_set() {
+                while (cube_set.length) {
+                    cube_set.pop().remove()
+                }
+            }
+
+            /*
+             * (func) rotate_input_letters
+             */
+            function rotate_input_letters() {
+                const [f, r, t] = [new Set(), new Set() ,new Set()]
+                explanation.forEach(([x, y, z]) => {
+                    f.add(au[x + (4 - y) * 5])
+                    r.add(au[z + (4 - y) * 5])
+                    t.add(au[x + (4 - z) * 5])
+                }); 
+                input = [[...f].join(''), [...r].join(''), [...t].join('')]
+            }
+
+            /*
+             * event onclick
+             */
+            tgt_node.onclick = () => {
+                clear_cube_set()
+                rotate_cubes()
+                draw_cubes()
+                rotate_input_letters()
+                grid_painting_main()
+            }
+
+            /**
+             * draw guid line
+             */
+            paper.path(['M', 10, 10 + view_px, 'v', 20]).attr(attr.guid_line)
+            paper.path(['M', 10 + view_px, 10 + view_px, 'v', 20]).attr(attr.guid_line)
+            paper.path(['M', 10 + view_px, 30 + view_px, 'h', 20]).attr(attr.guid_line)
+            paper.path(['M', 10 + view_px, 30 + view_px * 2, 'h', 20]).attr(attr.guid_line)
+
+            /**
+             * draw outline-frame
+             */
+            paper.path([
+                'M', draw_area_px * 3/4, 10,
+                'l', -base, height,
+                'v', hex_edge,
+                'l', base, -height,
+                'v', -hex_edge,
+                'l', base, height,
+                'v', hex_edge,
+                'l', -base, -height,
+                'l', -base, height,
+                'l', base, height,
+                'l', base, -height,
+            ]).attr(attr.projection_frame)
+
+            /*
+             * init execution
+             */
+            draw_cubes()
+            grid_painting_main()
+            paper.text(0, draw_area_px + 15,
+                'Click anywhere, rotate the object clockwise.').attr(attr.footer_text)
         }
 
         var io = new extIO({
