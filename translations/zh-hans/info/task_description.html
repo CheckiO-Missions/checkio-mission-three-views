@@ -1,0 +1,55 @@
+<!-- Describe task in general -->
+
+<p style="text-align: justify;">
+物体的体积几乎来自三个视图。
+</p>
+
+<p>
+输入值是三个视图（正面、右侧、顶部）。
+    每个视图都是由 A 到 Y 组成的字符串。
+这些字母在一个 5x5 的网格中按行大号顺序排列。
+</p>
+
+<p>您必须返回物体的总体积。</p>
+
+<strong>注意：</strong>
+<ul>
+    <li>答案为最大可能值。</li>
+</ul>
+
+<p>
+    <strong>举例说明：</strong>
+</p>
+
+<p style="text-align: center;">
+    <img title="example_01" src="{{MEDIA}}Three_views_example_01.svg" alt="example_01" style="vertical-align:top; width:310px;"/>
+    <img title="example_02" src="{{MEDIA}}Three_views_example_02.svg" alt="example_02" style="vertical-align:top; width:310px;"/>
+</p>
+
+<pre class="brush: {% if is_js %}javascript{% else %}python{% endif %}">
+assert three_views('BCDGHILMNQRSVWX', 'CHMRW', 'LMN') == 15
+assert three_views('GHILMNQRS', 'GHILMNQRS', 'GHILMNQRS', ) == 27
+</pre>
+
+
+
+<!-- Explain input and output values -->
+<p>
+   <strong>输入：</strong>三个视图（正面、右侧、顶部）（3 个字符串）
+</p>
+
+<p>
+   <strong>输出：</strong>物体的总体积（整数）
+</p>
+
+
+<!-- Here you can explain how it can be used in development -->
+<!-- The section is optional -->
+<!-- <p class="for_info_only">
+
+    <strong>How it’s used:</strong>
+    <i>(math is used everywhere)</i>
+</p> -->
+
+<!-- Here you can explain some constraints for input-->
+<!-- The section is optional -->
