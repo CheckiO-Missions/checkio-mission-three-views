@@ -1,0 +1,55 @@
+<!-- Describe task in general -->
+
+<p style="text-align: justify;">
+Le volume d'un objet est presque dérivé de trois vues.
+</p>
+
+<p>
+Vous disposez de trois vues (avant, côté droit, haut) comme valeurs d'entrée.
+    Chacune d'entre elles est une chaîne de caractères composée de A à Y.
+Ces lettres sont classées par ordre croissant dans une grille de 5 x 5.
+</p>
+
+<p>Vous devez indiquer le volume total de l'objet.</p>
+
+<strong>REMARQUE:</strong>
+<ul>
+    <li>La réponse est la valeur maximale possible.</li>
+</ul>
+
+<p>
+    <strong>Exemples:</strong>
+</p>
+
+<p style="text-align: center;">
+    <img title="example_01" src="{{MEDIA}}Three_views_example_01.svg" alt="example_01" style="vertical-align:top; width:310px;"/>
+    <img title="example_02" src="{{MEDIA}}Three_views_example_02.svg" alt="example_02" style="vertical-align:top; width:310px;"/>
+</p>
+
+<pre class="brush: {% if is_js %}javascript{% else %}python{% endif %}">
+assert three_views('BCDGHILMNQRSVWX', 'CHMRW', 'LMN') == 15
+assert three_views('GHILMNQRS', 'GHILMNQRS', 'GHILMNQRS', ) == 27
+</pre>
+
+
+
+<!-- Explain input and output values -->
+<p>
+   <strong>Entrée:</strong> Les trois vues (avant, côté droit, haut) (3 chaînes)
+</p>
+
+<p>
+   <strong>Sortie:</strong> Le volume total des objets (un entier)
+</p>
+
+
+<!-- Here you can explain how it can be used in development -->
+<!-- The section is optional -->
+<!-- <p class="for_info_only">
+
+    <strong>How it’s used:</strong>
+    <i>(math is used everywhere)</i>
+</p> -->
+
+<!-- Here you can explain some constraints for input-->
+<!-- The section is optional -->
