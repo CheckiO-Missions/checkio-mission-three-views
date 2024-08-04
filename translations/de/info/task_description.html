@@ -1,0 +1,55 @@
+<!-- Describe task in general -->
+
+<p style="text-align: justify;">
+Das Volumen eines Objekts wird fast aus drei Ansichten abgeleitet.
+</p>
+
+<p>
+Sie erhalten drei Ansichten (Vorderseite, rechte Seite, oben) als Eingabewerte.
+    Jede dieser Ansichten ist eine Zeichenfolge, die aus A bis Y besteht.
+Diese Buchstaben sind in einem 5x5-Gitter in zeilenweiser Reihenfolge angeordnet.
+</p>
+
+<p>Sie müssen das Gesamtvolumen des Objekts zurückgeben.</p>
+
+<strong>HINWEIS:</strong>
+<ul>
+    <li>Die Antwort ist der maximal mögliche Wert.</li>
+</ul>
+
+<p>
+    <strong>Beispiele:</strong>
+</p>
+
+<p style="text-align: center;">
+    <img title="example_01" src="{{MEDIA}}Three_views_example_01.svg" alt="example_01" style="vertical-align:top; width:310px;"/>
+    <img title="example_02" src="{{MEDIA}}Three_views_example_02.svg" alt="example_02" style="vertical-align:top; width:310px;"/>
+</p>
+
+<pre class="brush: {% if is_js %}javascript{% else %}python{% endif %}">
+assert three_views('BCDGHILMNQRSVWX', 'CHMRW', 'LMN') == 15
+assert three_views('GHILMNQRS', 'GHILMNQRS', 'GHILMNQRS', ) == 27
+</pre>
+
+
+
+<!-- Explain input and output values -->
+<p>
+   <strong>Eingabe:</strong> Die drei Ansichten (Vorderseite, rechte Seite, oben) (3 Strings)
+</p>
+
+<p>
+   <strong>Ausgabe:</strong> Das Gesamtvolumen der Objekte (Eine ganze Zahl)
+</p>
+
+
+<!-- Here you can explain how it can be used in development -->
+<!-- The section is optional -->
+<!-- <p class="for_info_only">
+
+    <strong>How it’s used:</strong>
+    <i>(math is used everywhere)</i>
+</p> -->
+
+<!-- Here you can explain some constraints for input-->
+<!-- The section is optional -->
