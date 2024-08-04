@@ -1,0 +1,55 @@
+<!-- Describe task in general -->
+
+<p style="text-align: justify;">
+Objętość obiektu określana jest na podstawie trzech widoków.
+</p>
+
+<p>
+Otrzymują Państwo trzy widoki (przód, prawa strona, góra) jako wartości wejściowe.
+    Każdy z nich jest ciągiem składającym się z liter od A do Y.
+Litery te mają przypisaną kolejność rząd-większość w siatce 5x5.
+</p>
+
+<p>Proszę zwrócić całkowitą objętość obiektu.</p>
+
+<strong>PROSZĘ ZAUWAŻYĆ:</strong>
+<ul>
+    <li>Odpowiedzią jest maksymalna możliwa wartość.</li>
+</ul>
+
+<p>
+    <strong>Przykłady:</strong>
+</p>
+
+<p style="text-align: center;">
+    <img title="example_01" src="{{MEDIA}}Three_views_example_01.svg" alt="example_01" style="vertical-align:top; width:310px;"/>
+    <img title="example_02" src="{{MEDIA}}Three_views_example_02.svg" alt="example_02" style="vertical-align:top; width:310px;"/>
+</p>
+
+<pre class="brush: {% if is_js %}javascript{% else %}python{% endif %}">
+assert three_views('BCDGHILMNQRSVWX', 'CHMRW', 'LMN') == 15
+assert three_views('GHILMNQRS', 'GHILMNQRS', 'GHILMNQRS', ) == 27
+</pre>
+
+
+
+<!-- Explain input and output values -->
+<p>
+   <strong>Dane wejściowe:</strong> Trzy widoki (przód, prawa strona, góra) (3 ciągi)
+</p>
+
+<p>
+   <strong>Dane wyjściowe:</strong> Całkowita objętość obiektów (liczba całkowita)
+</p>
+
+
+<!-- Here you can explain how it can be used in development -->
+<!-- The section is optional -->
+<!-- <p class="for_info_only">
+
+    <strong>How it’s used:</strong>
+    <i>(math is used everywhere)</i>
+</p> -->
+
+<!-- Here you can explain some constraints for input-->
+<!-- The section is optional -->
